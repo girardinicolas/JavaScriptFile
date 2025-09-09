@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Esercizio 5</title>
+</head>
+<body>
+  <h1>Esercizio 5</h1>
+  <ul id="todo-list"></ul>
+
+  <script>
+    fetch('https://jsonplaceholder.typicode.com/todos?_limit=5')
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then(todos => {
+        const ul = document.getElementById('todo-list');
+        todos.forEach(todo => {
+          const li = document.createElement('li');
+          li.textContent = `${todo.title} – Completato: ${todo.completed}`;
+          ul.appendChild(li);
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        const ul = document.getElementById('todo-list');
+        ul.textContent = 'Errore nel caricamento dei dati';
+      });
+  </script>
+</body>
+</html>

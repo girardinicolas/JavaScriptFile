@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lista Anime</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<h1>Lista Anime</h1>
+
+<div class="input-form">
+  <input id="newAnimeInput" type="text" placeholder="Nome Anime" />
+  <input id="newAnimeDesc" type="text" placeholder="Descrizione" />
+  <input id="newAnimeImage" type="text" placeholder="Url Immagine" />
+  <button onclick="addAnime()">Aggiungi Anime</button>
+</div>
+
+<div class="filters">
+  <label>Filtra per:
+    <select id="filterSelect" onchange="onFilterChange()">
+      <option value="all">Tutti</option>
+      <option value="toWatch">Da vedere</option>
+      <option value="ongoing">In corso</option>
+      <option value="seen">Visti</option>
+    </select>
+  </label>
+  <label>Ordina per data:
+    <select id="sortSelect" onchange="onSortChange()">
+      <option value="desc">Dal più recente</option>
+      <option value="asc">Dal meno recente</option>
+    </select>
+  </label>
+  <div id="storageSwitcher" style="margin: 20px 0;">
+    <button id="btnArrayStorage">Usa Array</button>
+    <button id="btnMapStorage">Usa Map</button>
+    <button id="btnAddFakePost" type="button">Aggiungi Fake Post</button>
+
+  </div>
+  
+</div>
+
+<div id="counters" class="counters">
+  <span>Da vedere: <span id="toWatchCount">0</span></span>
+  <span>In corso: <span id="ongoingCount">0</span></span>
+  <span>Visti: <span id="seenCount">0</span></span>
+</div>
+
+<div class="lists">
+  <section>
+    <h2>Da Vedere</h2>
+    <div id="toWatchContainer" class="anime-list"></div>
+  </section>
+  <section>
+    <h2>In Corso</h2>
+    <div id="ongoingContainer" class="anime-list"></div>
+  </section>
+  <section>
+    <h2>Visti</h2>
+    <div id="seenContainer" class="anime-list"></div>
+  </section>
+</div>
+
+<script src="todolist.js"></script>
+
+<div id="animeAddedPopup" style="display:none; position: fixed; top: 40%; left: 50%; transform: translateX(-50%); background-color: rgba(41, 128, 185, 0.9); color: white; padding: 15px 25px; border-radius: 8px; z-index: 1000; font-weight: bold; box-shadow: 0 0 10px rgba(0,0,0,0.3);">
+  Anime aggiunto con successo!
+</div>
+
+</body>
+</html>

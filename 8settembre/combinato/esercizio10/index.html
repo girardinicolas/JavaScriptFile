@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Esercizio 10</title>
+</head>
+<body>
+    <h1>Esercizio 10</h1>
+    <button id="loadBtn">Carica dati utente</button>
+    <div id="output"></div>
+
+    <script src="file.js"></script>
+    <script>
+        document.getElementById('loadBtn').addEventListener('click', async () => {
+            const output = document.getElementById('output');
+            output.innerHTML = 'Caricamento...';
+
+            try {
+                const userResponse = await fetch('https://jsonplaceholder.typicode.com/users/1');
+                const user = await userResponse.json();
+
+                const postsResponse = await fetch(`https://jsonplaceholder.typicode.com/posts?userId=${user.id}`);
+                const posts = await postsResponse.json();
+
+                let html = `<h2>Nome utente: ${user.name}</h2><ul>`;
+                posts.forEach(post => {
+                    html += `<li>${post.title}</li>`;
+                });
+                html += '</ul>';
+                output.innerHTML = html;
+
+            } catch (err) {
+                output.innerHTML = 'Errore nel caricamento dei dati';
+                console.error(err);
+            }
+        });
+    </script>
+</body>
+</html>

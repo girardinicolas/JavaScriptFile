@@ -1,4 +1,4 @@
 function somma(a, b) {
     return a + b;
-  }
-  console.log(somma(2, 3));
+}
+console.log(somma(2, 3));

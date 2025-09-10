@@ -1,0 +1,156 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f8ff; /* subtle light blue */
+    color: #2c3e50; /* darker blue-gray */
+    margin: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #2980b9; /* bright blue */
+  }
+  
+  .input-form {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .input-form input {
+    padding: 8px;
+    margin: 5px;
+    width: 150px;
+    border: 1px solid #2980b9;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .input-form input:focus {
+    border-color: #3498db;
+    outline: none;
+  }
+  
+  .input-form button {
+    padding: 8px 15px;
+    cursor: pointer;
+    background-color: #3498db; /* blue */
+    border: none;
+    color: white;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .input-form button:hover {
+    background-color: #2980b9;
+  }
+  
+  .filters {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #34495e; /* dark navy */
+  }
+  
+  .filters label {
+    margin: 0 10px;
+    font-weight: bold;
+    color: #34495e;
+  }
+  
+  .counters {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 16px;
+    color: #7f8c8d; /* grayish */
+  }
+  
+  .counters span {
+    margin: 0 15px;
+  }
+  
+  .lists {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .anime-list {
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    background: #d6eaf8; /* pale blue */
+    min-height: 300px;
+  }
+  
+  .anime-card {
+    border-bottom: 1px solid #b0c4de; /* light steel blue */
+    padding: 8px 0;
+    position: relative;
+    background-color: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .anime-card:last-child {
+    border-bottom: none;
+  }
+  
+  .anime-card img {
+    width: 100%;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+  
+  .anime-card h3 {
+    margin: 8px 0 4px 0;
+    color: #2c3e50;
+  }
+  
+  .description {
+    display: none;
+    margin: 5px 0 10px 0;
+    color: #555;
+  }
+  
+  .toggle-desc {
+    cursor: pointer;
+    user-select: none;
+    display: inline-block;
+    transition: transform 0.3s ease;
+    font-weight: bold;
+    margin-right: 6px;
+    color: #3498db;
+  }
+  
+  .toggle-desc.expanded {
+    transform: rotate(90deg);
+  }
+  
+  .anime-card label {
+    margin-left: 5px;
+    user-select: none;
+    color: #34495e;
+  }
+  
+  .anime-card input[type="checkbox"] {
+    cursor: pointer;
+  }
+  
+  .remove-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #e74c3c; /* tomato red */
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 3px 7px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .remove-btn:hover {
+    background: #c0392b; /* dark red */
+  }
+  

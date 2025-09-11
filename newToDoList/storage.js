@@ -1,20 +1,63 @@
+import { Anime } from './anime.js';
+
 export class AnimeStorageArray {
   constructor() {
     this.list = [];
   }
-  add(item) { this.list.push(item); }
-  remove(index) { this.list.splice(index, 1); }
-  update(index, newData) { this.list[index] = { ...this.list[index], ...newData }; }
-  findByName(name) { return this.list.find(a => a.name.toLowerCase() === name.toLowerCase()); }
-  getAll() { return this.list; }
-  size() { return this.list.length; }
+
+  add(itemData) {
+    const anime = itemData instanceof Anime ? itemData :
+      new Anime(
+        itemData.name,
+        itemData.description,
+        itemData.image,
+        itemData.toWatch,
+        itemData.ongoing,
+        itemData.seen
+      );
+    this.list.push(anime);
+  }
+
+  remove(index) {
+    this.list.splice(index, 1);
+  }
+
+  update(index, newData) {
+    const current = this.list[index];
+    this.list[index] = { ...current, ...newData };
+  }
+
+  findByName(name) {
+    return this.list.find(a => a.name.toLowerCase() === name.toLowerCase());
+  }
+
+  getAll() {
+    return this.list;
+  }
+
+  size() {
+    return this.list.length;
+  }
 }
 
 export class AnimeStorageMap {
   constructor() {
     this.map = new Map();
   }
-  add(item) { this.map.set(item.name.toLowerCase(), item); }
+
+  add(itemData) {
+    const anime = itemData instanceof Anime ? itemData :
+      new Anime(
+        itemData.name,
+        itemData.description,
+        itemData.image,
+        itemData.toWatch,
+        itemData.ongoing,
+        itemData.seen
+      );
+    this.map.set(anime.name.toLowerCase(), anime);
+  }
+
   remove(indexOrName) {
     if (typeof indexOrName === 'number') {
       const keys = Array.from(this.map.keys());
@@ -23,6 +66,7 @@ export class AnimeStorageMap {
       this.map.delete(indexOrName.toLowerCase());
     }
   }
+
   update(indexOrName, newData) {
     let key = typeof indexOrName === 'number' ? Array.from(this.map.keys())[indexOrName] : indexOrName.toLowerCase();
     if (key && this.map.has(key)) {
@@ -30,9 +74,18 @@ export class AnimeStorageMap {
       this.map.set(key, { ...current, ...newData });
     }
   }
-  findByName(name) { return this.map.get(name.toLowerCase()); }
-  getAll() { return Array.from(this.map.values()); }
-  size() { return this.map.size; }
+
+  findByName(name) {
+    return this.map.get(name.toLowerCase());
+  }
+
+  getAll() {
+    return Array.from(this.map.values());
+  }
+
+  size() {
+    return this.map.size;
+  }
 }
 
 export let animeStorage = new AnimeStorageArray();

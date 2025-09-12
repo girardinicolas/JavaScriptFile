@@ -1,46 +1,35 @@
+import { Anime } from './anime.js';
 import { animeStorage } from './storage.js';
-import { setupEventListeners } from './events.js';
-import { renderList, updateCounters, showAnimeAddedPopup } from './ui.js';
+import { renderList, updateCounters } from './ui.js';
 
 export let currentFilter = 'all';
 export let currentSortOrder = 'desc';
 
 export async function addAnime() {
-  const inputName = document.getElementById('newAnimeInput');
-  const inputDesc = document.getElementById('newAnimeDesc');
-  const inputImage = document.getElementById('newAnimeImage');
-
-  const name = inputName.value.trim();
-  const description = inputDesc.value.trim();
-  const image = inputImage.value.trim();
+  const name = document.getElementById('newAnimeInput').value.trim();
+  const description = document.getElementById('newAnimeDesc').value.trim();
+  const image = document.getElementById('newAnimeImage').value.trim();
 
   if (!name) {
-    alert('Per favore, inserisci un nome di anime.');
+    alert('Inserisci un nome');
     return;
   }
+
   if (animeStorage.findByName(name)) {
-    alert('Anime già presente.');
+    alert('Anime già esistente');
     return;
   }
 
-  animeStorage.add({
-    name,
-    description,
-    image,
-    toWatch: false,
-    ongoing: false,
-    seen: false,
-    addedDate: new Date()
-  });
+  const newAnime = new Anime(name, description, image);
+  animeStorage.add(newAnime);
 
-  inputName.value = '';
-  inputDesc.value = '';
-  inputImage.value = '';
+  // Reset inputs
+  document.getElementById('newAnimeInput').value = '';
+  document.getElementById('newAnimeDesc').value = '';
+  document.getElementById('newAnimeImage').value = '';
 
   renderList();
   updateCounters();
-
-  await showAnimeAddedPopup();
 }
 
 export function removeAnime(index) {
@@ -50,32 +39,32 @@ export function removeAnime(index) {
 }
 
 export function updateStatus(index, status, checked) {
-  const allAnimes = animeStorage.getAll();
+  const allAnime = animeStorage.getAll();
+  const anime = allAnime[index];
+  if (!anime) return;
 
   if (status === 'seen' && checked) {
-    allAnimes[index].seen = true;
-    allAnimes[index].toWatch = false;
-    allAnimes[index].ongoing = false;
+    anime.seen = true;
+    anime.toWatch = false;
+    anime.ongoing = false;
   } else if ((status === 'toWatch' || status === 'ongoing') && checked) {
-    allAnimes[index][status] = true;
-    allAnimes[index].seen = false;
+    anime[status] = true;
+    anime.seen = false;
   } else {
-    allAnimes[index][status] = checked;
+    anime[status] = checked;
   }
 
-  animeStorage.update(index, allAnimes[index]);
+  animeStorage.update(index, anime);
   renderList();
   updateCounters();
 }
 
-export function onFilterChange(event) {
-  currentFilter = event.target.value;
+export function changeFilter(newFilter) {
+  currentFilter = newFilter;
   renderList();
 }
 
-export function onSortChange(event) {
-  currentSortOrder = event.target.value;
+export function changeSort(newSort) {
+  currentSortOrder = newSort;
   renderList();
 }
-
-setupEventListeners();

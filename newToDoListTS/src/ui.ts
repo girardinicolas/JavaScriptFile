@@ -2,26 +2,31 @@ import { animeStorage } from './storage.js';
 import { removeAnime, updateStatus } from './main.js';
 import { currentFilter, currentSortOrder } from './main.js';
 
-export function mostraSoloContainer(filter) {
-  const containers = {
+export function mostraSoloContainer(filter: 'all' | 'toWatch' | 'ongoing' | 'seen'): void {
+  const containers: Record<'toWatch' | 'ongoing' | 'seen', HTMLElement | null> = {
     toWatch: document.getElementById('toWatchContainer'),
     ongoing: document.getElementById('ongoingContainer'),
     seen: document.getElementById('seenContainer'),
   };
 
   if (filter === 'all' || !filter) {
-    Object.values(containers).forEach(c => c.style.display = 'grid');
+    Object.values(containers).forEach(c => {
+      if (c) c.style.display = 'grid';
+    });
   } else {
     Object.keys(containers).forEach(key => {
-      containers[key].style.display = key === filter ? 'grid' : 'none';
+      const c = containers[key as 'toWatch' | 'ongoing' | 'seen'];
+      if (c) c.style.display = (key === filter) ? 'grid' : 'none';
     });
   }
 }
 
-export function renderList() {
+export function renderList(): void {
   const toWatchContainer = document.getElementById('toWatchContainer');
   const ongoingContainer = document.getElementById('ongoingContainer');
   const seenContainer = document.getElementById('seenContainer');
+
+  if (!toWatchContainer || !ongoingContainer || !seenContainer) return;
 
   toWatchContainer.innerHTML = '';
   ongoingContainer.innerHTML = '';
@@ -29,9 +34,13 @@ export function renderList() {
 
   let list = animeStorage.getAll();
 
-  if (currentFilter === 'toWatch') list = list.filter(a => a.toWatch);
-  else if (currentFilter === 'ongoing') list = list.filter(a => a.ongoing);
-  else if (currentFilter === 'seen') list = list.filter(a => a.seen);
+  if (currentFilter === 'toWatch') {
+    list = list.filter(a => a.toWatch);
+  } else if (currentFilter === 'ongoing') {
+    list = list.filter(a => a.ongoing);
+  } else if (currentFilter === 'seen') {
+    list = list.filter(a => a.seen);
+  }
 
   list.sort((a, b) =>
     currentSortOrder === 'asc' ? a.addedDate - b.addedDate : b.addedDate - a.addedDate
@@ -65,11 +74,14 @@ export function renderList() {
     actions.className = 'actions-container';
 
     ['toWatch', 'ongoing', 'seen'].forEach(status => {
+      // Fix: Use a strongly-typed key instead of string index to avoid TS error
+      type StatusKey = 'toWatch' | 'ongoing' | 'seen';
+      const statusKey = status as StatusKey;
       const cb = document.createElement('input');
       cb.type = 'checkbox';
-      cb.checked = anime[status];
-      cb.id = `${status}${index}`;
-      cb.addEventListener('change', e => updateStatus(index, status, e.target.checked));
+      cb.checked = anime[statusKey];
+      cb.id = `${statusKey}${index}`;
+      cb.addEventListener('change', e => updateStatus(index, statusKey, (e.target as HTMLInputElement).checked));
 
       const label = document.createElement('label');
       label.htmlFor = cb.id;
@@ -93,12 +105,17 @@ export function renderList() {
   });
 }
 
-export function updateCounters() {
-  const toWatchCount = animeStorage.getAll().filter(a => a.toWatch).length;
-  const ongoingCount = animeStorage.getAll().filter(a => a.ongoing).length;
-  const seenCount = animeStorage.getAll().filter(a => a.seen).length;
+export function updateCounters(): void {
+  const allAnime = animeStorage.getAll();
+  const toWatchCount = allAnime.filter(a => a.toWatch).length;
+  const ongoingCount = allAnime.filter(a => a.ongoing).length;
+  const seenCount = allAnime.filter(a => a.seen).length;
 
-  document.getElementById('toWatchCount').textContent = toWatchCount;
-  document.getElementById('ongoingCount').textContent = ongoingCount;
-  document.getElementById('seenCount').textContent = seenCount;
+  const toWatchCountElem = document.getElementById('toWatchCount');
+  const ongoingCountElem = document.getElementById('ongoingCount');
+  const seenCountElem = document.getElementById('seenCount');
+
+  if (toWatchCountElem) toWatchCountElem.textContent = toWatchCount.toString();
+  if (ongoingCountElem) ongoingCountElem.textContent = ongoingCount.toString();
+  if (seenCountElem) seenCountElem.textContent = seenCount.toString();
 }

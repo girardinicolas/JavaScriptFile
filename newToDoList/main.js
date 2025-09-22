@@ -1,9 +1,9 @@
 import { Anime } from './anime.js';
 import { animeStorage } from './storage.js';
-import { renderList, updateCounters } from './ui.js';
+import { renderList, updateCounters, mostraSoloContainer } from './ui.js';
 
-export let currentFilter = 'all';
-export let currentSortOrder = 'desc';
+export let currentFilter = 'all';       // filtro iniziale
+export let currentSortOrder = 'desc';   // ordinamento iniziale
 
 export async function addAnime() {
   const name = document.getElementById('newAnimeInput').value.trim();
@@ -14,16 +14,15 @@ export async function addAnime() {
     alert('Inserisci un nome');
     return;
   }
-
+  
   if (animeStorage.findByName(name)) {
     alert('Anime già esistente');
     return;
   }
-
+  
   const newAnime = new Anime(name, description, image);
   animeStorage.add(newAnime);
 
-  // Reset inputs
   document.getElementById('newAnimeInput').value = '';
   document.getElementById('newAnimeDesc').value = '';
   document.getElementById('newAnimeImage').value = '';
@@ -61,6 +60,7 @@ export function updateStatus(index, status, checked) {
 
 export function changeFilter(newFilter) {
   currentFilter = newFilter;
+  mostraSoloContainer(newFilter);
   renderList();
 }
 
@@ -68,3 +68,16 @@ export function changeSort(newSort) {
   currentSortOrder = newSort;
   renderList();
 }
+
+window.onload = () => {
+  const filterSelect = document.getElementById('filterSelect');
+  if (filterSelect) {
+    filterSelect.value = currentFilter;
+    filterSelect.addEventListener('change', (e) => {
+      changeFilter(e.target.value);
+      updateCounters();
+    });
+  }
+  renderList();
+  updateCounters();
+};

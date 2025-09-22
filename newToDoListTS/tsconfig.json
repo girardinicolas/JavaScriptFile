@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+      "target": "ES2020",                     // livello di output JS moderno
+      "module": "ESNext",                     // sistema moduli ES
+      "strict": true,                         // abilita strict type checking
+      "esModuleInterop": true,                // per import compatibili con CommonJS
+      "skipLibCheck": true,                   // ignora controlli tipi in librerie
+      "forceConsistentCasingInFileNames": true,
+      "outDir": "./dist",                     // output compilazione JS in dist
+      "rootDir": "./src",                     // root codice sorgente TS
+      "moduleResolution": "node",             // risoluzione moduli stile Node.js
+      "resolveJsonModule": true,              // supporta import JSON
+      "isolatedModules": true,                // isolare moduli per tool compatibilità
+      "noEmitOnError": true,                  // non emettere js se errori tipi
+      "allowSyntheticDefaultImports": true,  // per default import non ESModule
+      "skipDefaultLibCheck": true
+    },
+    "include": ["src/**/*"],                  // include tutti i TS in src
+    "exclude": ["node_modules", "dist"]      // esclude node_modules e dist
+  }
+  
